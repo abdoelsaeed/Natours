@@ -21,6 +21,7 @@ const viewRouter = require('./routes/viewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
 const cors = require('cors');
 
+//todo Start Express App
 const app = express();
 app.use(
   session({
