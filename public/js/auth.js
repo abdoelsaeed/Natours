@@ -89,7 +89,7 @@ const loved = async tourId => {
       window.setTimeout(() => {}, 1000);
     }
   } catch (e) {
-    showAlert('error', e.response.data.message);
+    showAlert('error', e.response.data.error.message);
   }
 };
 
@@ -112,8 +112,14 @@ const signUp = async (name, email, password, confirmPassword) => {
       }, 1000);
     }
   } catch (e) {
-    console.log(e);
-    showAlert('error', e);
+    if (
+      e.response.data.message.includes('E11000 duplicate key error collection')
+    ) {
+      showAlert('error', 'This email is exist already');
+    } else if (e.response.data.message.includes('User validation failed')) {
+      showAlert('error', 'the Password not equal Confirm Password');
+    }
+    showAlert('error', e.response.data.message);
   }
 };
 
