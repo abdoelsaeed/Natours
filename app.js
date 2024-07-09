@@ -19,7 +19,7 @@ const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const viewRouter = require('./routes/viewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
-const cors = require('cors');
+const compression = require('compression');
 
 //todo Start Express App
 const app = express();
@@ -137,6 +137,8 @@ app.use(
   })
 ); //مثلا لو كتبت في url ?sort=duration&sort=price  في الحاله العاديه هيدي ايرور انما بعد استخدامه يعمل سورت من غير مايجيب ايرور
 
+//بيضغط الحاجات ماعادا الصور لانها مضغوطه
+app.use(compression());
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
