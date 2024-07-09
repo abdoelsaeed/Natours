@@ -57,7 +57,6 @@ const resetpassword = async (password, confirmPassword) => {
     const path = window.location.href;
     url = path.split('/');
     token = url[url.length - 1];
-    console.log(token);
     const res = await axios({
       method: 'PATCH',
       url: `/api/v1/users/resetpassword/${token}`,
@@ -73,7 +72,6 @@ const resetpassword = async (password, confirmPassword) => {
       }, 5000);
     }
   } catch (e) {
-    console.log(e);
     showAlert('error', e.response.data.message);
   }
 };
@@ -91,7 +89,6 @@ const loved = async tourId => {
       window.setTimeout(() => {}, 1000);
     }
   } catch (e) {
-    console.log(e);
     showAlert('error', e.response.data.message);
   }
 };
@@ -115,8 +112,7 @@ const signUp = async (name, email, password, confirmPassword) => {
       }, 1000);
     }
   } catch (e) {
-    console.log(e);
-    showAlert('error', e.response.data.message);
+    showAlert('error', e);
   }
 };
 
@@ -136,7 +132,6 @@ const forgetPassword = async email => {
       }, 2000);
     }
   } catch (e) {
-    console.log(e);
     showAlert('error', e.response.data.message);
   }
 };
@@ -172,14 +167,11 @@ if (document.querySelector('.nav__el--logout')) {
 if (document.querySelector('.form--signup')) {
   document.querySelector('.form--signup').addEventListener('submit', e => {
     e.preventDefault();
-    console.log('12');
     const name = document.getElementById('name').value;
-    console.log(name);
 
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
-    console.log(name);
     signUp(name, email, password, confirmPassword);
   });
 }
