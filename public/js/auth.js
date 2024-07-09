@@ -112,6 +112,7 @@ const signUp = async (name, email, password, confirmPassword) => {
       }, 1000);
     }
   } catch (e) {
+    console.log(e);
     showAlert('error', e);
   }
 };
