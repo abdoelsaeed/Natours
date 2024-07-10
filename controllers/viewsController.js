@@ -21,13 +21,17 @@ exports.getOverview = async (req, res) => {
 exports.signup = catchAsync(async (req, res, next) => {
   res.status(200).render('signUp', {});
 });
+
 exports.getTour = catchAsync(async (req, res, next) => {
   //1) Get tour data from collection
   const tour = await Tour.findOne({ slug: req.params.slug }).populate({
     path: 'reviews',
     fields: 'review rating user'
   });
-  const booking = await Booking.findOne({ user: req.user.id, tour: tour.id });
+  let booking;
+  if (req.user)
+    booking = await Booking.findOne({ user: req.user.id, tour: tour.id });
+  else booking = '';
   const { outOfStock } = req;
   if (!tour) {
     return next(new AppError('There Is no Tour with this name', 404));
