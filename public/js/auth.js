@@ -89,7 +89,7 @@ const loved = async tourId => {
       window.setTimeout(() => {}, 1000);
     }
   } catch (e) {
-    showAlert('error', e.response.data.error.message);
+    showAlert('error', 'login to liked tour', e.response.data.message);
   }
 };
 

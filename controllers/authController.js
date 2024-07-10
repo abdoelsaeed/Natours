@@ -21,6 +21,7 @@ const Email = require('./../errFolder/email');
 //!
 //todo
 //?
+
 const signToken = (id, ip) => {
   return jwt.sign({ id, ip }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN
