@@ -58,8 +58,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordChangedAt: req.body.passwordChangedAt,
     role: req.body.role
   });
-  const url = '/me';
-  console.log(process.env.GMAIL_USERNAME);
+  const url = 'https://natours-git-master-abdoelsaeeds-projects.vercel.app//me';
 
   await new Email(newUser, url).sendWelcome();
   console.log(newUser, url);
