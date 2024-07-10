@@ -116,10 +116,10 @@ const signUp = async (name, email, password, confirmPassword) => {
       e.response.data.message.includes('E11000 duplicate key error collection')
     ) {
       showAlert('error', 'This email is exist already');
-    } else if (e.response.data.message.includes('User validation failed')) {
+    }
+    if (e.response.data.message.includes('User validation failed')) {
       showAlert('error', 'the Password not equal Confirm Password');
     }
-    showAlert('error', e.response.data.message);
   }
 };
 

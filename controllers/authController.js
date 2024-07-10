@@ -58,8 +58,11 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordChangedAt: req.body.passwordChangedAt,
     role: req.body.role
   });
-  const url = `${req.protocol}://${req.get('host')}/me`;
+  const url = '/me';
+  console.log(process.env.GMAIL_USERNAME);
+
   await new Email(newUser, url).sendWelcome();
+  console.log(newUser, url);
   createSendToken(newUser, 201, req, res);
 });
 
