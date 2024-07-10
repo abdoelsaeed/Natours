@@ -184,9 +184,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
   //3) Send it to user's email
   try {
-    const restURL = `${req.protocol}://${req.get(
-      'host'
-    )}/resetpassword/${resetToken}`;
+    const restURL = `https://natours-git-master-abdoelsaeeds-projects.vercel.app//resetpassword/${resetToken}`;
     await new Email(user, restURL).sendPasswordReset();
     res.status(200).json({
       status: 'success',
