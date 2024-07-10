@@ -26,10 +26,12 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   const session = await stripe.checkout.sessions.create({
     // معلومات عن السيشن
     payment_method_types: ['card'],
-    success_url: `${req.protocol}://${req.get('host')}/?tour=${
+    success_url: `https://natours-git-master-abdoelsaeeds-projects.vercel.app/?tour=${
       req.params.tourID
     }&user=${req.user.id}&price=${tour.price}`,
-    cancel_url: `${req.protocol}://${req.get('host')}/${tour.slug}`,
+    cancel_url: `https://natours-git-master-abdoelsaeeds-projects.vercel.app/${
+      tour.slug
+    }`,
     customer_email: req.user.email,
     client_reference_id: req.params.tourID,
     mode: 'payment', // إضافة وضع الدفع
