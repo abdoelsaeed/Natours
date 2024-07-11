@@ -53,7 +53,7 @@ exports.resizeUserPhoto = catchAsync(async (req, res,next) =>{
         .toFormat('jpeg')
         .jpeg({quality: 90})
         //.toFile دي بعد مابتخزنها في الميموري بتخليك تخزنها في الديسك عادي 
-        .toFile(`public/img/users/${req.file.filename}`);
+        .toFile(`https://natours-git-master-abdoelsaeeds-projects.vercel.app//img/users/${req.file.filename}`);
   next();
 });
 
