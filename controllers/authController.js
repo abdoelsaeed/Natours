@@ -1,3 +1,4 @@
+/* eslint-disable no-dupe-keys */
 /* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable no-plusplus */
 /* eslint-disable prefer-const */
@@ -30,15 +31,15 @@ const signToken = (id, ip) => {
 
 const createSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id, req.connection.remoteAddress);
-  const cookieOption = {
+
+  res.cookie('jwt', token, {
     expiresIn: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     secure: true, //يعني هيشتغل علي الhttps بس
-    httpOnly: true //ان مينفعش اي حد يعدل عليه هو بييجي مع الريكوست
-  };
-  // if (process.env.NODE_ENV === 'production') cookieOption.secure = true;
-  res.cookie('jwt', token, cookieOption);
+    httpOnly: true, //ان مينفعش اي حد يعدل عليه هو بييجي مع الريكوست
+    secure: req.secure || req.header('x-forwarded-proto') === 'https'
+  });
   user.password = undefined;
   res.status(statusCode).json({
     status: 'success',

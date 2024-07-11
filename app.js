@@ -23,6 +23,7 @@ const compression = require('compression');
 
 //todo Start Express App
 const app = express();
+app.enable('trust proxy');
 app.use(
   session({
     secret: 'your-secret-key', // قم بتبديل 'your-secret-key' بمفتاح سري فريد وآمن
