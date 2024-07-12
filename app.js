@@ -20,6 +20,7 @@ const reviewRouter = require('./routes/reviewRoutes');
 const viewRouter = require('./routes/viewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
 const compression = require('compression');
+const cors = require('cors');
 
 //todo Start Express App
 const app = express();
@@ -36,6 +37,14 @@ app.use(
 app.set('view engine', 'pug');
 //بقوله فين مكان الريندر اللي هيحصل
 app.set('views', path.join(__dirname, 'views'));
+
+//* implement CORS دي بتخلي لو انت في سيرفر او دومين تاني وطلبت تاخد api بيسمحلك عادي من غيرها اي حد غير الجهاز بتاعك مش هيعرف يوصل للapi
+//& app.use('/api/v1/tours',cors(), tourRouter); كنت ممكن اعملها كدا لو عايز مفيش اي حد يوصل ل api غير ال /api/v1/tours ده اللي يقدر يتشاف
+//? if my domin is api.natours.com and the domin frontend is api.natours.com you can use app.use(cors({origin: 'api.natours.com}));
+app.use(cors());
+
+//دي بتخلي ال cors تمشي علي كل العمليات زي delete patch get post put
+app.options('*', cors());
 
 //serving static files
 app.use('/public/css', express.static('public/css'));
