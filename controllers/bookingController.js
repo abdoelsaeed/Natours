@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-unused-vars */
 /* eslint-disable node/no-unsupported-features/es-syntax */
@@ -7,8 +8,7 @@ const Tour = require('./../model/tourModle');
 const catchAsync = require('./../errFolder/catchAsyn');
 const factory = require('./handlerFactory');
 const Booking = require('./../model/bookingModel');
-const AppError = require('../errFolder/err');
-
+const User = require('./../model/userModle');
 /*
 &myFunction
 !SomeAlert
@@ -26,9 +26,10 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   const session = await stripe.checkout.sessions.create({
     // معلومات عن السيشن
     payment_method_types: ['card'],
-    success_url: `https://natours-git-master-abdoelsaeeds-projects.vercel.app/?tour=${
-      req.params.tourID
-    }&user=${req.user.id}&price=${tour.price}`,
+    // success_url: `https://natours-git-master-abdoelsaeeds-projects.vercel.app/?tour=${
+    //   req.params.tourID
+    // }&user=${req.user.id}&price=${tour.price}`
+    success_url: `https://natours-git-master-abdoelsaeeds-projects.vercel.app/my-tour`,
     cancel_url: `https://natours-git-master-abdoelsaeeds-projects.vercel.app/${
       tour.slug
     }`,
@@ -60,14 +61,39 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.createBookingCheckout = catchAsync(async (req, res, next) => {
-  //todo This is only Temporary, because it is UNSECURE : everyone can make booking without paying
-  const { tour, user, price } = req.query;
-  if (!tour && !user && !price) return next();
+// exports.createBookingCheckout = catchAsync(async (req, res, next) => {
+//    This is only Temporary, because it is UNSECURE : everyone can make booking without paying
+//   const { tour, user, price } = req.query;
+//   if (!tour && !user && !price) return next();
+//   await Booking.create({ tour, user, price });
+//    any one wrtie the url with req.query(tour,user,price)  that will create new booking directly we use redirect to hide the req.query even any one can't copy the url
+//   res.redirect(req.originalUrl.split('?')[0]);
+// });
+exports.createBookingCheckout = async session => {
+  const tour = session.client_reference_id;
+  const user = (await User.findOne({ email: session.customer_email })).id;
+  const price = session.line_items[0].price_data.unit_amount / 100;
+  console.log(price);
   await Booking.create({ tour, user, price });
-  //! any one wrtie the url with req.query(tour,user,price)  that will create new booking directly we use redirect to hide the req.query even any one can't copy the url
-  res.redirect(req.originalUrl.split('?')[0]);
-});
+};
+exports.webhookCheckout = (req, res, next) => {
+  const signature = req.headers['stripe-signature'];
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      signature,
+      process.env.STRIPE_WEEBHOOK_SECRET
+    );
+  } catch (err) {
+    return res.status(400).send(`webhook error:${err.message}`);
+  }
+  if (event.type === 'checkout.session.completed') {
+    console.log(event.data.object);
+    createBookingCheckout(event.data.object);
+  }
+  res.status(200).json({ received: true });
+};
 exports.outOfStock = catchAsync(async (req, res, next) => {
   const tour = await Tour.find({ slug: req.params.slug });
   if (tour[0].maxGroupSize <= tour[0].numBooking) {

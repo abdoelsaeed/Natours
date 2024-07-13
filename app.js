@@ -19,6 +19,7 @@ const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const viewRouter = require('./routes/viewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
+const bookingController = require('./controllers/bookingController');
 const compression = require('compression');
 const cors = require('cors');
 
@@ -44,7 +45,6 @@ app.use(
 app.set('view engine', 'pug');
 //بقوله فين مكان الريندر اللي هيحصل
 app.set('views', path.join(__dirname, 'views'));
-
 
 //serving static files
 app.use('/public/css', express.static('public/css'));
@@ -122,6 +122,13 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP, please try again in an hour!'
 });
 app.use('/api', limiter); //اي ريكوست بيبدا ب كلمه api
+
+//دي خاصه  بstripe لي معملتها في البوكينج لان انا في السطر اللي تحت قايل ان اكسبريس هيستعمل البادي جيسون وانا عايزها بادي استرينج
+app.post(
+  '/webhook-checkout',
+  express.raw({ type: 'application/json' }),
+  bookingController.webhookCheckout
+);
 
 //Body parsing , reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
