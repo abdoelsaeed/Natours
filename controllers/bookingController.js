@@ -29,7 +29,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     // success_url: `https://natours-git-master-abdoelsaeeds-projects.vercel.app/?tour=${
     //   req.params.tourID
     // }&user=${req.user.id}&price=${tour.price}`
-    success_url: `https://natours-git-master-abdoelsaeeds-projects.vercel.app/my-tour`,
+    success_url: `https://natours-git-master-abdoelsaeeds-projects.vercel.app/my-tours`,
     cancel_url: `https://natours-git-master-abdoelsaeeds-projects.vercel.app/${
       tour.slug
     }`,
