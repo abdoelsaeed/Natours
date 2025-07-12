@@ -107,19 +107,19 @@ exports.deleteMe=catchAsync(async (req, res, next) => {
   });
 });
 
-exports.lovedTour =catchAsync(async (req, res, next) => {
-const user = await User.findById(req.user.id);
-    if (!user) return next(new AppError('Tour not found', 404));
-    if (!user.liked.includes(req.params.tourId)) {
-   user.liked.push(req.params.tourId);
-    } 
+exports.lovedTour = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+  if (!user) return next(new AppError('Tour not found', 404));
+  if (!user.liked.includes(req.params.tourId)) {
+    user.liked.push(req.params.tourId);
+  }
 
-    await user.save({ validateBeforeSave: false });
-    res.status(200).json({
-      status:'success',
-      user
-    })
+  await user.save({ validateBeforeSave: false });
+  res.status(200).json({
+    status: 'success',
+    user
   });
+});
 ;
 
 exports.getUser = factory.getOne(User);

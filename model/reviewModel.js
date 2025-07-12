@@ -70,6 +70,7 @@ reviewModel.statics.calcAverageRating = async function(tourId) {
     });
   }
 };
+
 reviewModel.post('save', function() {
   //this.constructor = ReviewModel;
   this.constructor.calcAverageRating(this.tour);

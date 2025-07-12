@@ -63,7 +63,6 @@ exports.signup = catchAsync(async (req, res, next) => {
   const url = 'https://natours-git-master-abdoelsaeeds-projects.vercel.app//me';
 
   await new Email(newUser, url).sendWelcome();
-  console.log(newUser, url);
   createSendToken(newUser, 201, req, res);
 });
 
@@ -133,15 +132,6 @@ exports.isLoggedIn = async (req, res, next) => {
     }
   }
   next();
-};
-
-exports.logout = (req, res, next) => {
-  // res.cookie('jwt', 'loggedout', {
-  //   expires: new Date(Date.now() + 10 * 1000),
-  //   httpOnly: true
-  // });
-  res.clearCookie('jwt');
-  res.status(200).json({ status: 'success' });
 };
 
 exports.restricTo = (...roles) => {

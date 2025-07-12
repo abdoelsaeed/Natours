@@ -16,6 +16,7 @@ exports.deleteOne = Model =>
       data: null
     });
   });
+
 exports.updateOne = Model =>
   catchAsync(async (req, res, next) => {
     const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
@@ -34,6 +35,7 @@ exports.updateOne = Model =>
       }
     });
   });
+
 exports.createOne = Model =>
   catchAsync(async (req, res, next) => {
     const doc = await Model.create(req.body);
@@ -44,6 +46,7 @@ exports.createOne = Model =>
       }
     });
   });
+
 exports.getOne = (Model, popOption) =>
   catchAsync(async (req, res, next) => {
     const query = Model.findById(req.params.id);
@@ -61,6 +64,7 @@ exports.getOne = (Model, popOption) =>
       }
     });
   });
+
 exports.getAll = Model =>
   catchAsync(async (req, res, next) => {
     // eslint-disable-next-line prettier/prettier

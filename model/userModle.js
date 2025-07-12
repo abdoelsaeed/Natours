@@ -102,15 +102,15 @@ userSchema.methods.correctPassword = async function(
 };
 
 userSchema.methods.createPasswordRestToken = function() {
-  const restToken = crypto.randomBytes(32).toString('hex');
-  this.passwordResetToken = crypto
-    .createHash('sha256')
-    .update(restToken)
-    .digest('hex');
-  // crypto احفظها مش فاهمها
-  this.passwordResetExpires = Date.now() + 10 * 60 * 1000; //مدته 10 minutes
-  return restToken;
-};
+    const restToken = crypto.randomBytes(32).toString('hex');
+    this.passwordResetToken = crypto
+      .createHash('sha256')
+      .update(restToken)
+      .digest('hex');
+    // crypto احفظها مش فاهمها
+    this.passwordResetExpires = Date.now() + 10 * 60 * 1000; //مدته 10 minutes
+    return restToken;
+  };
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
